@@ -1,0 +1,26 @@
+{
+  "name": "GiftExchange2014",
+  "version": "0.0.0",
+  "description": "Family Gift Exchange with Node.js",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mlindegarde/GiftExchange2014"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "mlindegarde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlindegarde/GiftExchange2014/issues"
+  },
+  "homepage": "https://github.com/mlindegarde/GiftExchange2014",
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "jquery": "^2.1.1"
+  }
+}

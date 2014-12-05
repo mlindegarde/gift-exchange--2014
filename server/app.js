@@ -1,0 +1,16 @@
+var express = require('express');
+var logger = require('morgan');
+
+var path = require('path');
+
+var app = express();
+app.use(logger("dev", {immediate: true, format: 'dev' }));
+
+app.get('/', function(req, res){
+  var html = path.resolve(__dirname + '/../index.html');
+  res.sendFile(html);
+});
+
+app.listen(5000);
+console.log("Server is running.");
+
