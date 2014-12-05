@@ -21,6 +21,7 @@
   "homepage": "https://github.com/mlindegarde/GiftExchange2014",
   "dependencies": {
     "backbone": "^1.1.2",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "express": "^4.10.4"
   }
 }
