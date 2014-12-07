@@ -11,6 +11,10 @@ app.get('/', function(req, res){
   var html = path.resolve(__dirname + '/../index.html');
   res.sendFile(html);
 });
+app.get('/static/bundle.js', function(req, res){
+  var js = path.resolve(__dirname + '/../static/bundle.js');
+  res.sendFile(js);
+});
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
