@@ -11,9 +11,15 @@ app.get('/', function(req, res){
   var html = path.resolve(__dirname + '/../index.html');
   res.sendFile(html);
 });
+
 app.get('/static/bundle.js', function(req, res){
   var js = path.resolve(__dirname + '/../static/bundle.js');
   res.sendFile(js);
+});
+
+app.get('/static/style.css', function(req, res){
+  var css = path.resolve(__dirname + '/../static/style.css');
+  res.sendFile(css);
 });
 
 app.listen(app.get('port'), function() {
