@@ -4,6 +4,7 @@ var logger = require('morgan');
 var path = require('path');
 
 var app = express();
+app.set('port', (process.env.PORT || 5000));
 app.use(logger("dev", {immediate: true, format: 'dev' }));
 
 app.get('/', function(req, res){
@@ -11,6 +12,7 @@ app.get('/', function(req, res){
   res.sendFile(html);
 });
 
-app.listen(5000);
-console.log("Server is running.");
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'));
+});
 
