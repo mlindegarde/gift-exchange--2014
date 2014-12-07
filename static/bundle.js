@@ -3026,6 +3026,25 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 }.call(this));
 
 },{}],3:[function(require,module,exports){
+module.exports=require(1)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/backbone.js":1,"underscore":4}],4:[function(require,module,exports){
+module.exports=require(2)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":2}],5:[function(require,module,exports){
+var Backbone = require("Backbone");
+var Movie = require('models/movie');
+
+var Movies = Backbone.Collection.extend({
+  mdoel: Movie
+});
+
+module.exports = Movies;
+
+},{"Backbone":1,"models/movie":7}],6:[function(require,module,exports){
+module.exports=[{"id": 1, "title": "The Artist"},
+ {"id": 2, "title": "Taxi Drive"},
+ {"id": 3, "title": "La Dolce Vita"}]
+
+},{}],7:[function(require,module,exports){
 var Backbone = require("Backbone");
 
 var Movie = Backbone.Model.extend({
@@ -3039,16 +3058,13 @@ var Movie = Backbone.Model.extend({
 
 module.exports = Movie;
 
-},{"Backbone":1}],"movies":[function(require,module,exports){
-var Backbone = require("Backbone");
-var Movie = require('models/movie');
+},{"Backbone":1}],"app":[function(require,module,exports){
+var Backbone = require('backbone');
+var Movies = require('collections/movies');
 
-var Movies = Backbone.Collection.extend({
-  mdoel: Movie
-});
+var data = require('data/movies.json');
+var movies = new Movies(data);
 
-module.exports = Movies;
+module.exports = movies;
 
-},{"Backbone":1,"models/movie":3}],"movie":[function(require,module,exports){
-module.exports=require(3)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/models/movie.js":3,"Backbone":1}]},{},[]);
+},{"backbone":3,"collections/movies":5,"data/movies.json":6}]},{},[]);
