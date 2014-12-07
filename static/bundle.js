@@ -1,9 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"app":[function(require,module,exports){
-var Backbone = require('backbone');
-module.exports = function() {return Backbone};
-
-
-},{"backbone":1}],1:[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3030,4 +3025,30 @@ module.exports = function() {return Backbone};
   }
 }.call(this));
 
-},{}]},{},[]);
+},{}],3:[function(require,module,exports){
+var Backbone = require("Backbone");
+
+var Movie = Backbone.Model.extend({
+  defaults: {
+    title: "default",
+    year: 0,
+    description: "empty",
+    selected: false
+  }
+});
+
+module.exports = Movie;
+
+},{"Backbone":1}],"movies":[function(require,module,exports){
+var Backbone = require("Backbone");
+var Movie = require('models/movie');
+
+var Movies = Backbone.Collection.extend({
+  mdoel: Movie
+});
+
+module.exports = Movies;
+
+},{"Backbone":1,"models/movie":3}],"movie":[function(require,module,exports){
+module.exports=require(3)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/models/movie.js":3,"Backbone":1}]},{},[]);
