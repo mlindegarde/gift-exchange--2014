@@ -3034,18 +3034,23 @@ var Backbone = require("Backbone");
 var Movie = require('models/movie');
 
 var Movies = Backbone.Collection.extend({
-  model: Movie,
-  resetSelected: function() {
-    this.each(function(model) {
-      model.set({"selected": false});
-    });
-  },
-  selectById: function(id) {
-    this.resetSelected();
-    var movie = this.get(id);
-    movie.set({"selected": true});
-    return movie.id;
-  }
+    model: Movie,
+    resetSelected: function() {
+        this.each(function(model) {
+            model.set({"selected": false});
+        });
+    },
+    selectById: function(id) {
+        this.resetSelected();
+
+        var movie = this.get(id);
+
+        movie.set({
+            "selected": true
+        });
+
+        return movie.id;
+    }
 });
 
 module.exports = Movies;
@@ -12251,11 +12256,11 @@ return jQuery;
 var Backbone = require("Backbone");
 
 var Movie = Backbone.Model.extend({
-  defaults: {
-    title: "default",
-    year: 0,
-    description: "empty",
-    selected: false
+    defaults: {
+        title: "default",
+        year: 0,
+        description: "empty",
+        selected: false
   }
 });
 
@@ -12325,6 +12330,7 @@ var _ = require('underscore');
 Backbone.$ = $;
 Backbone._ = _;
 
+var Movie = require('models/movie');
 var Movies = require('collections/movies');
 
 var data = require('data/movies.json');
@@ -12333,9 +12339,11 @@ var movies = new Movies(data);
 var MovieView = require('views/movie');
 var MoviesList = require('views/movieList');
 
-module.exports = { 
-  movies: movies, 
-  MovieView: MovieView,
-  MoviesList: MoviesList  };
+module.exports = {
+    Movie: Movie,
+    movies: movies,
+    MovieView: MovieView,
+    MoviesList: MoviesList
+};
 
-},{"backbone":3,"collections/movies":5,"data/movies.json":6,"jquery":7,"underscore":9,"views/movie":10,"views/movieList":11}]},{},[]);
+},{"backbone":3,"collections/movies":5,"data/movies.json":6,"jquery":7,"models/movie":8,"underscore":9,"views/movie":10,"views/movieList":11}]},{},[]);
