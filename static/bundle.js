@@ -12260,12 +12260,14 @@ var Backbone = require('backbone');
 var MovieView = Backbone.View.extend({
   tagName: 'article',
   className: 'movie',
+  template: '<h1><%= title %><hr></h1>',
   initialize: function() {
     _.bindAll(this, "render");
     this.listenTo(this.model, 'change:title', this.render);
   },
   render: function() {
-    this.$el.html(this.model.get('title'));
+    var tmpl = _.template(this.template);
+    this.$el.html(tmpl(this.model.toJSON()));
     this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
@@ -12274,7 +12276,25 @@ var MovieView = Backbone.View.extend({
 
 module.exports = MovieView;
 
-},{"backbone":3,"jquery":7,"underscore":9}],"app":[function(require,module,exports){
+},{"backbone":3,"jquery":7,"underscore":9}],11:[function(require,module,exports){
+var Backbone = require('backbone');
+
+var MovieView = require('views/movie');
+var MoviesList = Backbone.View.extend({
+  tagName: 'section',
+  render: function() {
+    var moviesView = this.collection.map(function(movie) {
+      return (new MovieView({model: movie})).render().el;
+    });
+
+    this.$el.html(moviesView);
+    return this;
+  }
+});
+
+module.exports = MoviesList;
+
+},{"backbone":3,"views/movie":10}],"app":[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -12288,7 +12308,11 @@ var data = require('data/movies.json');
 var movies = new Movies(data);
 
 var MovieView = require('views/movie');
+var MoviesList = require('views/movieList');
 
-module.exports = { movies: movies, MovieView: MovieView  };
+module.exports = { 
+  movies: movies, 
+  MovieView: MovieView,
+  MoviesList: MoviesList  };
 
-},{"backbone":3,"collections/movies":5,"data/movies.json":6,"jquery":7,"underscore":9,"views/movie":10}]},{},[]);
+},{"backbone":3,"collections/movies":5,"data/movies.json":6,"jquery":7,"underscore":9,"views/movie":10,"views/movieList":11}]},{},[]);

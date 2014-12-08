@@ -11,5 +11,9 @@ var data = require('data/movies.json');
 var movies = new Movies(data);
 
 var MovieView = require('views/movie');
+var MoviesList = require('views/movieList');
 
-module.exports = { movies: movies, MovieView: MovieView  };
+module.exports = { 
+  movies: movies, 
+  MovieView: MovieView,
+  MoviesList: MoviesList  };
