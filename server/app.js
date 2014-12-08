@@ -1,9 +1,9 @@
 var express = require('express');
 var logger = require('morgan');
-
 var path = require('path');
 
 var app = express();
+
 app.set('port', (process.env.PORT || 5000));
 app.use(logger("dev", {immediate: true, format: 'dev' }));
 

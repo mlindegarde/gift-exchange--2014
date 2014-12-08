@@ -14,6 +14,7 @@ var MovieView = require('views/movie');
 var MoviesList = require('views/movieList');
 
 module.exports = { 
-  movies: movies, 
-  MovieView: MovieView,
-  MoviesList: MoviesList  };
+    movies: movies,
+    MovieView: MovieView,
+    MoviesList: MoviesList
+};
