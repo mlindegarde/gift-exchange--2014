@@ -3034,15 +3034,26 @@ var Backbone = require("Backbone");
 var Movie = require('models/movie');
 
 var Movies = Backbone.Collection.extend({
-  mdoel: Movie
+  model: Movie,
+  resetSelected: function() {
+    this.each(function(model) {
+      model.set({"selected": false});
+    });
+  },
+  selectById: function(id) {
+    this.resetSelected();
+    var movie = this.get(id);
+    movie.set({"selected": true});
+    return movie.id;
+  }
 });
 
 module.exports = Movies;
 
 },{"Backbone":1,"models/movie":8}],6:[function(require,module,exports){
-module.exports=[{"id": 1, "title": "The Artist"},
- {"id": 2, "title": "Taxi Drive"},
- {"id": 3, "title": "La Dolce Vita"}]
+module.exports=[{"id": 1, "title": "The Artist", "selected": true},
+ {"id": 2, "title": "Taxi Drive", "selected": false},
+ {"id": 3, "title": "La Dolce Vita", "selected": false}]
 
 },{}],7:[function(require,module,exports){
 /*!
@@ -12264,6 +12275,7 @@ var MovieView = Backbone.View.extend({
   initialize: function() {
     _.bindAll(this, "render");
     this.listenTo(this.model, 'change:title', this.render);
+    this.listenTo(this.model, 'change:selected', this.render);
   },
   render: function() {
     var tmpl = _.template(this.template);
@@ -12271,6 +12283,17 @@ var MovieView = Backbone.View.extend({
     this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
+  },
+  events: {
+    'click': '_selectMovie'
+  },
+  _selectMovie: function(ev) {
+    ev.preventDefault();
+    
+    if(!this.model.get('selected')) {
+      this.model.collection.resetSelected();
+      this.model.collection.selectById(this.model.id);
+    }
   }
 });
 
