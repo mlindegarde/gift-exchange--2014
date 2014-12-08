@@ -1,7 +1,9 @@
 var Backbone = require('backbone');
 var $ = require('jquery');
+var _ = require('underscore');
 
 Backbone.$ = $;
+Backbone._ = _;
 
 var Movies = require('collections/movies');
 

@@ -12251,12 +12251,19 @@ var Movie = Backbone.Model.extend({
 module.exports = Movie;
 
 },{"Backbone":1}],9:[function(require,module,exports){
+module.exports=require(2)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":2}],10:[function(require,module,exports){
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
 
 var MovieView = Backbone.View.extend({
   tagName: 'article',
   className: 'movie',
+  initialize: function() {
+    _.bindAll(this, "render");
+    this.listenTo(this.model, 'change:title', this.render);
+  },
   render: function() {
     this.$el.html(this.model.get('title'));
     this.$el.toggleClass('selected', this.model.get('selected'));
@@ -12267,11 +12274,13 @@ var MovieView = Backbone.View.extend({
 
 module.exports = MovieView;
 
-},{"backbone":3,"jquery":7}],"app":[function(require,module,exports){
+},{"backbone":3,"jquery":7,"underscore":9}],"app":[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
+var _ = require('underscore');
 
 Backbone.$ = $;
+Backbone._ = _;
 
 var Movies = require('collections/movies');
 
@@ -12282,4 +12291,4 @@ var MovieView = require('views/movie');
 
 module.exports = { movies: movies, MovieView: MovieView  };
 
-},{"backbone":3,"collections/movies":5,"data/movies.json":6,"jquery":7,"views/movie":9}]},{},[]);
+},{"backbone":3,"collections/movies":5,"data/movies.json":6,"jquery":7,"underscore":9,"views/movie":10}]},{},[]);
