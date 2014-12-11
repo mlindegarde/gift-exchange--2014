@@ -4,7 +4,7 @@
   "description": "Family Gift Exchange with Node.js",
   "main": "app/index.js",
   "scripts": {
-    "start": "node server/app.js"
+    "start": "node server/pushstate-server.js"
   },
   "repository": {
     "type": "git",
