@@ -5,6 +5,9 @@ var _ = require('underscore');
 Backbone.$ = $;
 Backbone._ = _;
 
+var MoviesRouter = require('routers/movies');
+
+/*
 var Movie = require('models/movie');
 var Movies = require('collections/movies');
 
@@ -20,3 +23,16 @@ module.exports = {
     MovieView: MovieView,
     MoviesList: MoviesList
 };
+*/
+
+$(document).ready(function() {
+  console.log('Init app ...');
+
+  var router = new MoviesRouter({el: $('#movies') });
+
+  Backbone.history.start({
+    pushState: true,
+    root: '/'
+  });
+});
+
