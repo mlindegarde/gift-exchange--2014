@@ -3096,9 +3096,9 @@ var Movies = Backbone.Collection.extend({
 module.exports = Movies;
 
 },{"Backbone":2,"models/movie":9}],7:[function(require,module,exports){
-module.exports=[{"id": 1, "title": "The Artist", "selected": true},
- {"id": 2, "title": "Taxi Drive", "selected": false},
- {"id": 3, "title": "La Dolce Vita", "selected": false}]
+module.exports=[{"id": 1, "title": "The Artist", "selected": true, "showtime": "1:00 pm", "description": "asdf"},
+ {"id": 2, "title": "Taxi Drive", "selected": false, "showtime": "2:00 pm", "description": "fdsa"},
+ {"id": 3, "title": "La Dolce Vita", "selected": false, "showtime": "3:00 pm", "description": "cccc"}]
 
 },{}],8:[function(require,module,exports){
 /*!
@@ -12320,6 +12320,8 @@ var data = require('data/movies.json');
 var movies = new Movies(data);
 
 // views
+var Layout = require('views/layout');
+
 var Movies = require('collections/movies');
 var MoviesList = require('views/movieList');
 
@@ -12330,30 +12332,140 @@ var MoviesRouter = Backbone.Router.extend({
   },
 
   selectMovie: function(id) {
-    this.moviesList.render();
+    this.movies.resetSelected();
     this.movies.selectById(id);
+    this.layout.setDetails(this.movies.get(id));
   },
 
   showMain: function() {
-    this.moviesList.render();
+    this.movies.resetSelected();
+    this.layout.setChose();
   },
 
   initialize: function(options) {
     this.movies = movies;
-    this.moviesList = new MoviesList({
-      el: options.el,
-      collection: movies
+    this.layout = Layout.getInstance({
+      el: '#movies',
+      router: this
     });
 
-    _.extend(this.moviesList, {router: this});
+    this.layout.render();
   }
 });
 
 module.exports = MoviesRouter;
 
-},{"backbone":4,"collections/movies":6,"data/movies.json":7,"jquery":8,"underscore":11,"views/movieList":13}],11:[function(require,module,exports){
+},{"backbone":4,"collections/movies":6,"data/movies.json":7,"jquery":8,"underscore":11,"views/layout":14,"views/movieList":16}],11:[function(require,module,exports){
 module.exports=require(3)
 },{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":3}],12:[function(require,module,exports){
+var Backbone = require('backbone');
+
+var ChoseView = Backbone.View.extend({
+  template: '<h1>Welcome to Munich Cinema</h1>  \
+             <h2>Please choose a movie</h2>',
+
+  className: 'details',
+
+  render: function() {
+    this.$el.html(this.template);
+    return this;
+  }
+});
+
+module.exports = ChoseView;
+
+},{"backbone":4}],13:[function(require,module,exports){
+var Backbone = require('backbone');
+var _ = require('underscore');
+
+Backbone._ = _;
+
+var DetailsView = Backbone.View.extend({
+  el: '#details',
+  
+  template: _.template('<%= showtime %> <br /> <%= description %>'),
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+    return this;
+  }
+});
+
+module.exports = DetailsView;
+
+},{"backbone":4,"underscore":11}],14:[function(require,module,exports){
+var Backbone = require('backbone');
+var _ = require('underscore');
+
+Backbone._ = _;
+
+// import the moviesList
+var MoviesList = require('views/movieList');
+var ChoseView = require('views/chose');
+var DetailsView = require('views/details');
+
+var Layout = Backbone.View.extend({
+  template: _.template('             \
+             <div id="overview">     \
+             </div>                  \
+             <div id="details">      \
+             </div>'),
+
+  initialize: function(options) {
+    // create the selection list
+    this.overview = new MoviesList({
+      collection: options.router.movies,
+      router: options.router
+    });
+
+    // create the details view
+    this.currentDetails = new ChoseView();
+  },
+
+  render: function() {
+    this.$el.html(this.template());
+    this.currentDetails.setElement(this.$('#details')).render();
+    this.overview.setElement(this.$('#overview')).render();
+
+    return this;
+  },
+
+  setDetails: function(movie) {
+    if(this.currentDetails) {
+      this.currentDetails.remove();
+    }
+
+    this.currentDetails = new DetailsView({model: movie});
+    this.render();
+  },
+
+  setChose: function() {
+    if(this.currentDetails) {
+      this.currentDetails.remove();
+    }
+
+    this.currentDetails = new ChoseView();
+    this.render();
+  }
+});
+
+var instance;
+
+Layout.getInstance = function(options) {
+  if(!instance) {
+    instance = new Layout({
+      el: options.el,
+      router: options.router,
+      collection: options.router.movies
+    });
+  }
+
+  return instance;
+}
+
+module.exports = Layout;
+
+},{"backbone":4,"underscore":11,"views/chose":12,"views/details":13,"views/movieList":16}],15:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -12361,7 +12473,7 @@ var Backbone = require('backbone');
 var MovieView = Backbone.View.extend({
   tagName: 'article',
   className: 'movie',
-  template: '<h1><a href="/movies/<%= id %>"><%= title %></a><hr></h1>',
+  template: '<h1><a href="/movies/<%= id %>"><%= title %></a><hr /></h1>',
 
   initialize: function(options) {
     _.bindAll(this, "render");
@@ -12391,14 +12503,14 @@ var MovieView = Backbone.View.extend({
       this.model.collection.resetSelected();
       this.model.collection.selectById(this.model.id);
 
-      this.router.navigate("/movies/" + this.model.id);
+      this.router.navigate("/movies/" + this.model.id, {trigger: true});
     }
   }
 });
 
 module.exports = MovieView;
 
-},{"backbone":4,"jquery":8,"underscore":11}],13:[function(require,module,exports){
+},{"backbone":4,"jquery":8,"underscore":11}],16:[function(require,module,exports){
 var Backbone = require('backbone');
 
 var MovieView = require('views/movie');
@@ -12422,4 +12534,4 @@ var MoviesList = Backbone.View.extend({
 
 module.exports = MoviesList;
 
-},{"backbone":4,"views/movie":12}]},{},[1]);
+},{"backbone":4,"views/movie":15}]},{},[1]);

@@ -11,6 +11,8 @@ var data = require('data/movies.json');
 var movies = new Movies(data);
 
 // views
+var Layout = require('views/layout');
+
 var Movies = require('collections/movies');
 var MoviesList = require('views/movieList');
 
@@ -21,22 +23,24 @@ var MoviesRouter = Backbone.Router.extend({
   },
 
   selectMovie: function(id) {
-    this.moviesList.render();
+    this.movies.resetSelected();
     this.movies.selectById(id);
+    this.layout.setDetails(this.movies.get(id));
   },
 
   showMain: function() {
-    this.moviesList.render();
+    this.movies.resetSelected();
+    this.layout.setChose();
   },
 
   initialize: function(options) {
     this.movies = movies;
-    this.moviesList = new MoviesList({
-      el: options.el,
-      collection: movies
+    this.layout = Layout.getInstance({
+      el: '#movies',
+      router: this
     });
 
-    _.extend(this.moviesList, {router: this});
+    this.layout.render();
   }
 });
 

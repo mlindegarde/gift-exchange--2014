@@ -5,7 +5,7 @@ var Backbone = require('backbone');
 var MovieView = Backbone.View.extend({
   tagName: 'article',
   className: 'movie',
-  template: '<h1><a href="/movies/<%= id %>"><%= title %></a><hr></h1>',
+  template: '<h1><a href="/movies/<%= id %>"><%= title %></a><hr /></h1>',
 
   initialize: function(options) {
     _.bindAll(this, "render");
@@ -35,7 +35,7 @@ var MovieView = Backbone.View.extend({
       this.model.collection.resetSelected();
       this.model.collection.selectById(this.model.id);
 
-      this.router.navigate("/movies/" + this.model.id);
+      this.router.navigate("/movies/" + this.model.id, {trigger: true});
     }
   }
 });
