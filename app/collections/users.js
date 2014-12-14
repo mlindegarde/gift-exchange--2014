@@ -12,7 +12,7 @@ var Users = Backbone.Collection.extend({
     }
   },
 
-  add: function(model) {
+  addUser: function(model) {
     this.add(model);
   },
 
