@@ -1,4 +1,30 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Backbone = require("Backbone");
+var User = require('models/user');
+
+var Users = Backbone.Collection.extend({
+  model: User,
+
+  disableById: function(id) {
+    var user = this.get(id);
+
+    if(user){
+      user.set('enabled', false);
+    }
+  },
+
+  addUser: function(model) {
+    this.add(model);
+  },
+
+  randomize: function() {
+    return this.shuffle();
+  }
+});
+
+module.exports = Users;
+
+},{"Backbone":12,"models/user":20}],2:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -20,7 +46,273 @@ $(document).ready(function() {
 });
 
 
-},{"backbone":4,"jquery":8,"routers/rounds":11,"underscore":12}],2:[function(require,module,exports){
+},{"backbone":14,"jquery":18,"routers/rounds":21,"underscore":22}],3:[function(require,module,exports){
+var Backbone = require("Backbone");
+var UserList = require('collections/users');
+
+var Round = Backbone.Model.extend({
+  defaults: {
+    users: null
+  }
+});
+
+module.exports = Round;
+},{"Backbone":12,"collections/users":16}],4:[function(require,module,exports){
+var Backbone = require('backbone');
+
+var Selection = Backbone.Model.extend({
+  defaults: {
+    "selected": 1
+  }
+});
+
+module.exports = Selection;
+
+
+},{"backbone":14}],5:[function(require,module,exports){
+var Backbone = require("Backbone");
+
+var User = Backbone.Model.extend({
+  defaults: {
+    name: 'default',
+    history: new Array(),
+    enabled: true
+  }
+});
+
+module.exports = User;
+
+},{"Backbone":12}],6:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+
+Backbone.$ = $;
+Backbone._ = _;
+
+// model
+var Round = require('models/round');
+var Users = require('collections/users');
+
+// data
+var data = require('data/users.json');
+var users = new Users(data);
+
+// views
+var Layout = require('views/layout');
+var UserList = require('views/userList');
+
+// router
+var RoundsRouter = Backbone.Router.extend({
+  routes: {
+    'rounds/:id': 'selectRound',
+    '': 'showMain'
+  },
+
+  initialize: function(options) {
+    this.users = users;
+    this.round = null;
+    this.layout = Layout.getInstance({
+      el: options.el,
+      router: this
+    });
+
+    this.layout.render();
+  },
+
+  selectRound: function(id) {
+    this.round = new Round();
+
+    this.round.set('id', id);
+    this.round.set('user', this.users.randomize());
+
+    this.layout.setRound(this.round);
+  },
+
+  showMain: function() {
+    this.layout.setGreeting();
+  }
+
+
+});
+
+module.exports = RoundsRouter;
+
+},{"backbone":14,"collections/users":16,"data/users.json":17,"jquery":18,"models/round":19,"underscore":22,"views/layout":24,"views/userList":27}],7:[function(require,module,exports){
+var Backbone = require('backbone');
+
+var GreetingView = Backbone.View.extend({
+  template: '<h1>Welcome to the 2014 Christmas Exchange</h1>',
+
+  className: 'details',
+
+  render: function() {
+    this.$el.html(this.template);
+    return this;
+  }
+});
+
+module.exports = GreetingView;
+},{"backbone":14}],8:[function(require,module,exports){
+var Backbone = require('backbone');
+var _ = require('underscore');
+
+Backbone._ = _;
+
+// import the moviesList
+var UserList = require('views/userList');
+var GreetingView = require('views/greeting');
+var RoundView = require('views/round');
+
+var Layout = Backbone.View.extend({
+  template: _.template('             \
+             <div id="userList">     \
+             </div>                  \
+             <div id="round">      \
+             </div>'),
+
+  initialize: function(options) {
+    // create the selection list
+    this.userList = new UserList({
+      collection: options.router.users,
+      router: options.router
+    });
+
+    // create the details view
+    this.currentRound = new GreetingView();
+  },
+
+  render: function() {
+    this.$el.html(this.template());
+    this.currentRound.setElement(this.$('#round')).render();
+    this.userList.setElement(this.$('#userList')).render();
+
+    return this;
+  },
+
+  setRound: function(round) {
+    if(this.currentRound) {
+      this.currentRound.remove();
+    }
+
+    this.currentRound = new RoundView({model: round});
+    this.render();
+  },
+
+  setGreeting: function() {
+    if(this.currentRound) {
+      this.currentRound.remove();
+    }
+
+    this.currentRound = new GreetingView();
+    this.render();
+  }
+});
+
+var instance;
+
+Layout.getInstance = function(options) {
+  if(!instance) {
+    instance = new Layout({
+      el: options.el,
+      router: options.router,
+      collection: options.router.users
+    });
+  }
+
+  return instance;
+}
+
+module.exports = Layout;
+
+},{"backbone":14,"underscore":22,"views/greeting":23,"views/round":25,"views/userList":27}],9:[function(require,module,exports){
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
+
+Backbone._ = _;
+Backbone.$ = $;
+
+var RoundView = Backbone.View.extend({
+  el: '#round',
+
+  template: _.template('<%= id %>'),
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+    return this;
+  }
+});
+
+module.exports = RoundView;
+},{"backbone":14,"jquery":18,"underscore":22}],10:[function(require,module,exports){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+
+var UserView = Backbone.View.extend({
+  tagName: 'article',
+  className: 'user',
+  template: '<%= name %>',
+
+  initialize: function(options) {
+    _.bindAll(this, "render");
+
+    this.router = options.router;
+
+    this.listenTo(this.model, 'change:name', this.render);
+  },
+
+  render: function() {
+    var tmpl = _.template(this.template);
+    this.$el.html(tmpl(this.model.toJSON()));
+    this.$el.toggleClass('selected', this.model.get('selected'));
+
+    return this;
+  },
+
+  events: {
+    'click': '_selectUser'
+  },
+
+  _selectUser: function(ev) {
+    ev.preventDefault();
+
+    if(!this.model.get('selected')) {
+      this.model.collection.resetSelected();
+      this.model.collection.selectById(this.model.id);
+
+      this.router.navigate("/users/" + this.model.id, {trigger: true});
+    }
+  }
+});
+
+module.exports = UserView;
+
+},{"backbone":14,"jquery":18,"underscore":22}],11:[function(require,module,exports){
+var Backbone = require('backbone');
+
+var UserView = require('views/user');
+var UserList = Backbone.View.extend({
+  tagName: 'section',
+
+  initialize: function(options){
+    this.router = options.router;
+  },
+
+  render: function() {
+    var that = this;
+    var userViews = this.collection.map(function(user) {
+      return (new UserView({model: user, router: that.router})).render().el;
+    });
+
+    this.$el.html(userViews);
+    return this;
+  }
+});
+
+module.exports = UserList;
+},{"backbone":14,"views/user":26}],12:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1630,7 +1922,7 @@ $(document).ready(function() {
 
 }));
 
-},{"underscore":3}],3:[function(require,module,exports){
+},{"underscore":13}],13:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3047,37 +3339,13 @@ $(document).ready(function() {
   }
 }.call(this));
 
-},{}],4:[function(require,module,exports){
-module.exports=require(2)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/backbone.js":2,"underscore":5}],5:[function(require,module,exports){
-module.exports=require(3)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":3}],6:[function(require,module,exports){
-var Backbone = require("Backbone");
-var User = require('models/user');
-
-var Users = Backbone.Collection.extend({
-  model: User,
-
-  disableById: function(id) {
-    var user = this.get(id);
-
-    if(user){
-      user.set('enabled', false);
-    }
-  },
-
-  addUser: function(model) {
-    this.add(model);
-  },
-
-  randomize: function() {
-    return this.shuffle();
-  }
-});
-
-module.exports = Users;
-
-},{"Backbone":2,"models/user":10}],7:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+module.exports=require(12)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/backbone.js":12,"underscore":15}],15:[function(require,module,exports){
+module.exports=require(13)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":13}],16:[function(require,module,exports){
+module.exports=require(1)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/collections/users.js":1,"Backbone":12,"models/user":20}],17:[function(require,module,exports){
 module.exports=[{"id": 1, "name": "Mike", "enabled": true, "history": []},
  {"id": 2, "name": "Sarah", "enabled": true, "history": []},
  {"id": 3, "name": "Scott", "enabled": true, "history": []},
@@ -3087,7 +3355,7 @@ module.exports=[{"id": 1, "name": "Mike", "enabled": true, "history": []},
  {"id": 7, "name": "Curt", "enabled": true, "history": []},
  {"id": 8, "name": "Donna", "enabled": true, "history": []}]
 
-},{}],8:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -12279,260 +12547,22 @@ return jQuery;
 
 }));
 
-},{}],9:[function(require,module,exports){
-var Backbone = require("Backbone");
-var UserList = require('collections/users');
-
-var Round = Backbone.Model.extend({
-  defaults: {
-    users: null
-  }
-});
-
-module.exports = Round;
-},{"Backbone":2,"collections/users":6}],10:[function(require,module,exports){
-var Backbone = require("Backbone");
-
-var User = Backbone.Model.extend({
-  defaults: {
-    name: 'default',
-    history: new Array(),
-    enabled: true
-  }
-});
-
-module.exports = User;
-
-},{"Backbone":2}],11:[function(require,module,exports){
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
-
-Backbone.$ = $;
-Backbone._ = _;
-
-// model
-var Round = require('models/round');
-var Users = require('collections/users');
-
-// data
-var data = require('data/users.json');
-var users = new Users(data);
-
-// views
-var Layout = require('views/layout');
-var UserList = require('views/userList');
-
-// router
-var RoundsRouter = Backbone.Router.extend({
-  routes: {
-    'rounds/:id': 'selectRound',
-    '': 'showMain'
-  },
-
-  initialize: function(options) {
-    this.users = users;
-    this.round = null;
-    this.layout = Layout.getInstance({
-      el: options.el,
-      router: this
-    });
-
-    this.layout.render();
-  },
-
-  selectRound: function(id) {
-    this.round = new Round();
-
-    this.round.set('id', id);
-    this.round.set('user', this.users.randomize());
-
-    this.layout.setRound(this.round);
-  },
-
-  showMain: function() {
-    this.layout.setGreeting();
-  }
-
-
-});
-
-module.exports = RoundsRouter;
-
-},{"backbone":4,"collections/users":6,"data/users.json":7,"jquery":8,"models/round":9,"underscore":12,"views/layout":14,"views/userList":17}],12:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports=require(3)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":3}],13:[function(require,module,exports){
-var Backbone = require('backbone');
-
-var GreetingView = Backbone.View.extend({
-  template: '<h1>Welcome to the 2014 Christmas Exchange</h1>',
-
-  className: 'details',
-
-  render: function() {
-    this.$el.html(this.template);
-    return this;
-  }
-});
-
-module.exports = GreetingView;
-},{"backbone":4}],14:[function(require,module,exports){
-var Backbone = require('backbone');
-var _ = require('underscore');
-
-Backbone._ = _;
-
-// import the moviesList
-var UserList = require('views/userList');
-var GreetingView = require('views/greeting');
-var RoundView = require('views/round');
-
-var Layout = Backbone.View.extend({
-  template: _.template('             \
-             <div id="userList">     \
-             </div>                  \
-             <div id="round">      \
-             </div>'),
-
-  initialize: function(options) {
-    // create the selection list
-    this.userList = new UserList({
-      collection: options.router.users,
-      router: options.router
-    });
-
-    // create the details view
-    this.currentRound = new GreetingView();
-  },
-
-  render: function() {
-    this.$el.html(this.template());
-    this.currentRound.setElement(this.$('#round')).render();
-    this.userList.setElement(this.$('#userList')).render();
-
-    return this;
-  },
-
-  setRound: function(round) {
-    if(this.currentRound) {
-      this.currentRound.remove();
-    }
-
-    this.currentRound = new RoundView({model: round});
-    this.render();
-  },
-
-  setGreeting: function() {
-    if(this.currentRound) {
-      this.currentRound.remove();
-    }
-
-    this.currentRound = new GreetingView();
-    this.render();
-  }
-});
-
-var instance;
-
-Layout.getInstance = function(options) {
-  if(!instance) {
-    instance = new Layout({
-      el: options.el,
-      router: options.router,
-      collection: options.router.users
-    });
-  }
-
-  return instance;
-}
-
-module.exports = Layout;
-
-},{"backbone":4,"underscore":12,"views/greeting":13,"views/round":15,"views/userList":17}],15:[function(require,module,exports){
-var Backbone = require('backbone');
-var _ = require('underscore');
-var $ = require('jquery');
-
-Backbone._ = _;
-Backbone.$ = $;
-
-var RoundView = Backbone.View.extend({
-  el: '#round',
-
-  template: _.template('<%= id %>'),
-
-  render: function() {
-    this.$el.html(this.template(this.model.toJSON()));
-    return this;
-  }
-});
-
-module.exports = RoundView;
-},{"backbone":4,"jquery":8,"underscore":12}],16:[function(require,module,exports){
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-
-var UserView = Backbone.View.extend({
-  tagName: 'article',
-  className: 'user',
-  template: '<%= name %>',
-
-  initialize: function(options) {
-    _.bindAll(this, "render");
-
-    this.router = options.router;
-
-    this.listenTo(this.model, 'change:name', this.render);
-  },
-
-  render: function() {
-    var tmpl = _.template(this.template);
-    this.$el.html(tmpl(this.model.toJSON()));
-    this.$el.toggleClass('selected', this.model.get('selected'));
-
-    return this;
-  },
-
-  events: {
-    'click': '_selectUser'
-  },
-
-  _selectUser: function(ev) {
-    ev.preventDefault();
-
-    if(!this.model.get('selected')) {
-      this.model.collection.resetSelected();
-      this.model.collection.selectById(this.model.id);
-
-      this.router.navigate("/users/" + this.model.id, {trigger: true});
-    }
-  }
-});
-
-module.exports = UserView;
-
-},{"backbone":4,"jquery":8,"underscore":12}],17:[function(require,module,exports){
-var Backbone = require('backbone');
-
-var UserView = require('views/user');
-var UserList = Backbone.View.extend({
-  tagName: 'section',
-
-  initialize: function(options){
-    this.router = options.router;
-  },
-
-  render: function() {
-    var that = this;
-    var userViews = this.collection.map(function(user) {
-      return (new UserView({model: user, router: that.router})).render().el;
-    });
-
-    this.$el.html(userViews);
-    return this;
-  }
-});
-
-module.exports = UserList;
-},{"backbone":4,"views/user":16}]},{},[1]);
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/models/round.js":3,"Backbone":12,"collections/users":16}],20:[function(require,module,exports){
+module.exports=require(5)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/models/user.js":5,"Backbone":12}],21:[function(require,module,exports){
+module.exports=require(6)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/routers/rounds.js":6,"backbone":14,"collections/users":16,"data/users.json":17,"jquery":18,"models/round":19,"underscore":22,"views/layout":24,"views/userList":27}],22:[function(require,module,exports){
+module.exports=require(13)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":13}],23:[function(require,module,exports){
+module.exports=require(7)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/greeting.js":7,"backbone":14}],24:[function(require,module,exports){
+module.exports=require(8)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/layout.js":8,"backbone":14,"underscore":22,"views/greeting":23,"views/round":25,"views/userList":27}],25:[function(require,module,exports){
+module.exports=require(9)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/round.js":9,"backbone":14,"jquery":18,"underscore":22}],26:[function(require,module,exports){
+module.exports=require(10)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/user.js":10,"backbone":14,"jquery":18,"underscore":22}],27:[function(require,module,exports){
+module.exports=require(11)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/userList.js":11,"backbone":14,"views/user":26}]},{},[1,2,3,4,5,6,7,8,9,10,11]);
