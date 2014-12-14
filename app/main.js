@@ -5,12 +5,12 @@ var _ = require('underscore');
 Backbone.$ = $;
 Backbone._ = _;
 
-var UsersRouter = require('routers/users');
+var RoundsRouter = require('routers/rounds');
 
 $(document).ready(function() {
   console.log('Init app ...');
 
-  var router = new UsersRouter({el: $('#users') });
+  var router = new RoundsRouter({el: $('#root') });
 
   Backbone.history.start({
     pushState: true,

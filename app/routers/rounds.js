@@ -6,6 +6,7 @@ Backbone.$ = $;
 Backbone._ = _;
 
 // model
+var Round = require('models/round');
 var Users = require('collections/users');
 
 // data
@@ -17,25 +18,37 @@ var Layout = require('views/layout');
 var UserList = require('views/userList');
 
 // router
-var UsersRouter = Backbone.Router.extend({
+var RoundsRouter = Backbone.Router.extend({
   routes: {
-    'users/:id': 'selectUser',
+    'rounds/:id': 'selectRound',
     '': 'showMain'
-  },
-
-  showMain: function() {
-    this.layout.setChose();
   },
 
   initialize: function(options) {
     this.users = users;
+    this.round = null;
     this.layout = Layout.getInstance({
       el: options.el,
       router: this
     });
 
     this.layout.render();
+  },
+
+  selectRound: function(id) {
+    this.round = new Round();
+
+    this.round.set('id', id);
+    this.round.set('user', this.users.randomize());
+
+    this.layout.setRound(this.round);
+  },
+
+  showMain: function() {
+    this.layout.setGreeting();
   }
+
+
 });
 
-module.exports = UsersRouter;
+module.exports = RoundsRouter;

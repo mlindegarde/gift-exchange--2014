@@ -6,12 +6,12 @@ var _ = require('underscore');
 Backbone.$ = $;
 Backbone._ = _;
 
-var UsersRouter = require('routers/users');
+var RoundsRouter = require('routers/rounds');
 
 $(document).ready(function() {
   console.log('Init app ...');
 
-  var router = new UsersRouter({el: $('#users') });
+  var router = new RoundsRouter({el: $('#root') });
 
   Backbone.history.start({
     pushState: true,
@@ -20,7 +20,7 @@ $(document).ready(function() {
 });
 
 
-},{"backbone":4,"jquery":8,"routers/users":10,"underscore":11}],2:[function(require,module,exports){
+},{"backbone":4,"jquery":8,"routers/rounds":11,"underscore":12}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3070,14 +3070,14 @@ var Users = Backbone.Collection.extend({
     this.add(model);
   },
 
-  randomizeOrder: function() {
-    this.collection.reset(this.collection.shuffle(), {silent: true});
+  randomize: function() {
+    return this.shuffle();
   }
 });
 
 module.exports = Users;
 
-},{"Backbone":2,"models/user":9}],7:[function(require,module,exports){
+},{"Backbone":2,"models/user":10}],7:[function(require,module,exports){
 module.exports=[{"id": 1, "name": "Mike", "enabled": true, "history": []},
  {"id": 2, "name": "Sarah", "enabled": true, "history": []},
  {"id": 3, "name": "Scott", "enabled": true, "history": []},
@@ -12281,6 +12281,17 @@ return jQuery;
 
 },{}],9:[function(require,module,exports){
 var Backbone = require("Backbone");
+var UserList = require('collections/users');
+
+var Round = Backbone.Model.extend({
+  defaults: {
+    users: null
+  }
+});
+
+module.exports = Round;
+},{"Backbone":2,"collections/users":6}],10:[function(require,module,exports){
+var Backbone = require("Backbone");
 
 var User = Backbone.Model.extend({
   defaults: {
@@ -12292,7 +12303,7 @@ var User = Backbone.Model.extend({
 
 module.exports = User;
 
-},{"Backbone":2}],10:[function(require,module,exports){
+},{"Backbone":2}],11:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -12301,6 +12312,7 @@ Backbone.$ = $;
 Backbone._ = _;
 
 // model
+var Round = require('models/round');
 var Users = require('collections/users');
 
 // data
@@ -12312,37 +12324,48 @@ var Layout = require('views/layout');
 var UserList = require('views/userList');
 
 // router
-var UsersRouter = Backbone.Router.extend({
+var RoundsRouter = Backbone.Router.extend({
   routes: {
-    'users/:id': 'selectUser',
+    'rounds/:id': 'selectRound',
     '': 'showMain'
-  },
-
-  showMain: function() {
-    this.layout.setChose();
   },
 
   initialize: function(options) {
     this.users = users;
+    this.round = null;
     this.layout = Layout.getInstance({
       el: options.el,
       router: this
     });
 
     this.layout.render();
+  },
+
+  selectRound: function(id) {
+    this.round = new Round();
+
+    this.round.set('id', id);
+    this.round.set('user', this.users.randomize());
+
+    this.layout.setRound(this.round);
+  },
+
+  showMain: function() {
+    this.layout.setGreeting();
   }
+
+
 });
 
-module.exports = UsersRouter;
+module.exports = RoundsRouter;
 
-},{"backbone":4,"collections/users":6,"data/users.json":7,"jquery":8,"underscore":11,"views/layout":14,"views/userList":16}],11:[function(require,module,exports){
+},{"backbone":4,"collections/users":6,"data/users.json":7,"jquery":8,"models/round":9,"underscore":12,"views/layout":14,"views/userList":17}],12:[function(require,module,exports){
 module.exports=require(3)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":3}],12:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":3}],13:[function(require,module,exports){
 var Backbone = require('backbone');
 
-var ChoseView = Backbone.View.extend({
-  template: '<h1>Welcome to Christmas Exchange</h1>  \
-             <h2>Please choose a user</h2>',
+var GreetingView = Backbone.View.extend({
+  template: '<h1>Welcome to the 2014 Christmas Exchange</h1>',
 
   className: 'details',
 
@@ -12352,79 +12375,59 @@ var ChoseView = Backbone.View.extend({
   }
 });
 
-module.exports = ChoseView;
-
-},{"backbone":4}],13:[function(require,module,exports){
-var Backbone = require('backbone');
-var _ = require('underscore');
-
-Backbone._ = _;
-
-var DetailsView = Backbone.View.extend({
-  el: '#details',
-  
-  template: _.template('<%= showtime %> <br /> <%= description %>'),
-
-  render: function() {
-    this.$el.html(this.template(this.model.toJSON()));
-    return this;
-  }
-});
-
-module.exports = DetailsView;
-
-},{"backbone":4,"underscore":11}],14:[function(require,module,exports){
+module.exports = GreetingView;
+},{"backbone":4}],14:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 
 Backbone._ = _;
 
 // import the moviesList
-var UsersList = require('views/userList');
-var ChoseView = require('views/chose');
-var DetailsView = require('views/details');
+var UserList = require('views/userList');
+var GreetingView = require('views/greeting');
+var RoundView = require('views/round');
 
 var Layout = Backbone.View.extend({
   template: _.template('             \
-             <div id="overview">     \
+             <div id="userList">     \
              </div>                  \
-             <div id="details">      \
+             <div id="round">      \
              </div>'),
 
   initialize: function(options) {
     // create the selection list
-    this.overview = new UsersList({
+    this.userList = new UserList({
       collection: options.router.users,
       router: options.router
     });
 
     // create the details view
-    this.currentDetails = new ChoseView();
+    this.currentRound = new GreetingView();
   },
 
   render: function() {
     this.$el.html(this.template());
-    this.currentDetails.setElement(this.$('#details')).render();
-    this.overview.setElement(this.$('#overview')).render();
+    this.currentRound.setElement(this.$('#round')).render();
+    this.userList.setElement(this.$('#userList')).render();
 
     return this;
   },
 
-  setDetails: function(user) {
-    if(this.currentDetails) {
-      this.currentDetails.remove();
+  setRound: function(round) {
+    if(this.currentRound) {
+      this.currentRound.remove();
     }
 
-    this.currentDetails = new DetailsView({model: user});
+    this.currentRound = new RoundView({model: round});
     this.render();
   },
 
-  setChose: function() {
-    if(this.currentDetails) {
-      this.currentDetails.remove();
+  setGreeting: function() {
+    if(this.currentRound) {
+      this.currentRound.remove();
     }
 
-    this.currentDetails = new ChoseView();
+    this.currentRound = new GreetingView();
     this.render();
   }
 });
@@ -12445,15 +12448,35 @@ Layout.getInstance = function(options) {
 
 module.exports = Layout;
 
-},{"backbone":4,"underscore":11,"views/chose":12,"views/details":13,"views/userList":16}],15:[function(require,module,exports){
+},{"backbone":4,"underscore":12,"views/greeting":13,"views/round":15,"views/userList":17}],15:[function(require,module,exports){
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
+
+Backbone._ = _;
+Backbone.$ = $;
+
+var RoundView = Backbone.View.extend({
+  el: '#round',
+
+  template: _.template('<%= id %>'),
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+    return this;
+  }
+});
+
+module.exports = RoundView;
+},{"backbone":4,"jquery":8,"underscore":12}],16:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
 var UserView = Backbone.View.extend({
   tagName: 'article',
-  className: 'movie',
-  template: '<h1><a href="/movies/<%= id %>"><%= name %></a><hr /></h1>',
+  className: 'user',
+  template: '<%= name %>',
 
   initialize: function(options) {
     _.bindAll(this, "render");
@@ -12489,7 +12512,7 @@ var UserView = Backbone.View.extend({
 
 module.exports = UserView;
 
-},{"backbone":4,"jquery":8,"underscore":11}],16:[function(require,module,exports){
+},{"backbone":4,"jquery":8,"underscore":12}],17:[function(require,module,exports){
 var Backbone = require('backbone');
 
 var UserView = require('views/user');
@@ -12512,4 +12535,4 @@ var UserList = Backbone.View.extend({
 });
 
 module.exports = UserList;
-},{"backbone":4,"views/user":15}]},{},[1]);
+},{"backbone":4,"views/user":16}]},{},[1]);

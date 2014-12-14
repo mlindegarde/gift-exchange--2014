@@ -4,51 +4,51 @@ var _ = require('underscore');
 Backbone._ = _;
 
 // import the moviesList
-var UsersList = require('views/userList');
-var ChoseView = require('views/chose');
-var DetailsView = require('views/details');
+var UserList = require('views/userList');
+var GreetingView = require('views/greeting');
+var RoundView = require('views/round');
 
 var Layout = Backbone.View.extend({
   template: _.template('             \
-             <div id="overview">     \
+             <div id="userList">     \
              </div>                  \
-             <div id="details">      \
+             <div id="round">      \
              </div>'),
 
   initialize: function(options) {
     // create the selection list
-    this.overview = new UsersList({
+    this.userList = new UserList({
       collection: options.router.users,
       router: options.router
     });
 
     // create the details view
-    this.currentDetails = new ChoseView();
+    this.currentRound = new GreetingView();
   },
 
   render: function() {
     this.$el.html(this.template());
-    this.currentDetails.setElement(this.$('#details')).render();
-    this.overview.setElement(this.$('#overview')).render();
+    this.currentRound.setElement(this.$('#round')).render();
+    this.userList.setElement(this.$('#userList')).render();
 
     return this;
   },
 
-  setDetails: function(user) {
-    if(this.currentDetails) {
-      this.currentDetails.remove();
+  setRound: function(round) {
+    if(this.currentRound) {
+      this.currentRound.remove();
     }
 
-    this.currentDetails = new DetailsView({model: user});
+    this.currentRound = new RoundView({model: round});
     this.render();
   },
 
-  setChose: function() {
-    if(this.currentDetails) {
-      this.currentDetails.remove();
+  setGreeting: function() {
+    if(this.currentRound) {
+      this.currentRound.remove();
     }
 
-    this.currentDetails = new ChoseView();
+    this.currentRound = new GreetingView();
     this.render();
   }
 });
