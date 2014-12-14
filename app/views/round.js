@@ -1,12 +1,14 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var $ = require('jquery');
 
 Backbone._ = _;
+Backbone.$ = $;
 
-var DetailsView = Backbone.View.extend({
-  el: '#details',
-  
-  template: _.template('<%= showtime %> <br /> <%= description %>'),
+var RoundView = Backbone.View.extend({
+  el: '#round',
+
+  template: _.template('<%= id %>'),
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
@@ -14,4 +16,4 @@ var DetailsView = Backbone.View.extend({
   }
 });
 
-module.exports = DetailsView;
+module.exports = RoundView;

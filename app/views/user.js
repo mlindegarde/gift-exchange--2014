@@ -4,8 +4,8 @@ var Backbone = require('backbone');
 
 var UserView = Backbone.View.extend({
   tagName: 'article',
-  className: 'movie',
-  template: '<h1><a href="/movies/<%= id %>"><%= name %></a><hr /></h1>',
+  className: 'user',
+  template: '<%= name %>',
 
   initialize: function(options) {
     _.bindAll(this, "render");

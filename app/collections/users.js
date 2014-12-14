@@ -16,8 +16,8 @@ var Users = Backbone.Collection.extend({
     this.add(model);
   },
 
-  randomizeOrder: function() {
-    this.collection.reset(this.collection.shuffle(), {silent: true});
+  randomize: function() {
+    return this.shuffle();
   }
 });
 
