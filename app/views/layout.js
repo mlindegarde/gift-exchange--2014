@@ -4,7 +4,7 @@ var _ = require('underscore');
 Backbone._ = _;
 
 // import the moviesList
-var MoviesList = require('views/movieList');
+var UsersList = require('views/userList');
 var ChoseView = require('views/chose');
 var DetailsView = require('views/details');
 
@@ -17,8 +17,8 @@ var Layout = Backbone.View.extend({
 
   initialize: function(options) {
     // create the selection list
-    this.overview = new MoviesList({
-      collection: options.router.movies,
+    this.overview = new UsersList({
+      collection: options.router.users,
       router: options.router
     });
 
@@ -34,12 +34,12 @@ var Layout = Backbone.View.extend({
     return this;
   },
 
-  setDetails: function(movie) {
+  setDetails: function(user) {
     if(this.currentDetails) {
       this.currentDetails.remove();
     }
 
-    this.currentDetails = new DetailsView({model: movie});
+    this.currentDetails = new DetailsView({model: user});
     this.render();
   },
 
@@ -60,7 +60,7 @@ Layout.getInstance = function(options) {
     instance = new Layout({
       el: options.el,
       router: options.router,
-      collection: options.router.movies
+      collection: options.router.users
     });
   }
 
