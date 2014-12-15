@@ -51,6 +51,64 @@ $(document).ready(function() {
     pushState: true,
     root: '/'
   });
+
+  // snowflake stuff
+  const NUMBER_OF_FLAKES = 50;
+
+  function randomInteger(low, high) {
+    return low + Math.floor(Math.random() * (high - low));
+  }
+
+  function randomFloat(low, high){
+    return low + Math.random() * (high - low);
+  }
+
+  function setAnimation(prop, value, el) {
+    prop = prop[0].toUpperCase() + prop.slice(1);
+    el.style['webkitAnimation' + prop] = value;
+    el.style['MozAnimation' + prop] = value;
+  }
+
+  function makeFlake() {
+    var maxLeft = $(window).width();
+
+    var leafDiv = document.createElement('div');
+    var image = document.createElement('img');
+
+    image.src = '/images/snowflake' + randomInteger(1, 5) + '.svg';
+    image.width = 100 * randomFloat(0.5, 1);
+
+    leafDiv.style.top = "-100px";
+    leafDiv.style.left = randomInteger(0, maxLeft) + "px";
+
+    var spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
+    setAnimation('name', spinAnimationName, image);
+
+    var fadeAndDropDuration = randomFloat(30, 60) + 's';
+    setAnimation('duration', fadeAndDropDuration + ', ' + fadeAndDropDuration, leafDiv);
+
+    var spinDuration = randomFloat(6, 12) + 's';
+    setAnimation('duration', spinDuration, image);
+
+    var leafDelay = randomFloat(0, 45) + 's';
+    setAnimation('delay', leafDelay, leafDiv);
+
+    leafDiv.appendChild(image);
+    return leafDiv;
+  }
+
+  var container = document.getElementById('flakes');
+  for (var i = 0; i < NUMBER_OF_FLAKES; i++) {
+    container.appendChild(makeFlake());
+  }
+
+  // Firefox doesn't support cross domain webfonts...
+  if ('MozAppearance' in document.documentElement.style) {
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "http://dl.dropbox.com/u/534786/card/font.css";
+    document.head.appendChild(link);
+  }
 });
 
 
@@ -171,7 +229,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div id=\"userList\">\n</div>\n<div id=\"round\">\n</div>'";
+  return "<div id=\"userList\">\n</div>\n<div id=\"round\">\n</div>";
   });
 
 templates["randomUser"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -180,11 +238,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"random-user\">\n    Random - ";
+  buffer += "<div class=\"image-container\">\n    <img src=\"../images/reindeer-1.svg\" />\n    <!-- Random - ";
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\n</div>";
+    + " -->\n</div>";
   return buffer;
   });
 
@@ -194,11 +252,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div>\n    Round ";
-  if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\n</div>\n<div id=\"randomUserList\">\n</div>\n<div>\n    <a href=\"/rounds/";
+  buffer += "<div id=\"randomUserList\">\n</div>\n<div>\n    <a href=\"/rounds/";
   if (helper = helpers.nextRoundId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.nextRoundId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -326,8 +380,8 @@ var Handlebars = require('handlebars');
 var Templates = require('templates/compiledTemplates')(Handlebars);
 
 var RandomUserView = Backbone.View.extend({
-  tagName: 'article',
-  className: 'user',
+  tagName: 'li',
+  className: 'random-user',
   template: Templates['randomUser'],
 
   initialize: function(options) {
@@ -362,7 +416,7 @@ var Backbone = require('backbone');
 
 var RandomUserView = require('views/randomUser');
 var RandomizedUserList = Backbone.View.extend({
-  tagName: 'section',
+  tagName: 'ul',
 
   initialize: function(options){
     this.router = options.router;

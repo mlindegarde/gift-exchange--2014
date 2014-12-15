@@ -17,7 +17,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div id=\"userList\">\n</div>\n<div id=\"round\">\n</div>'";
+  return "<div id=\"userList\">\n</div>\n<div id=\"round\">\n</div>";
   });
 
 templates["randomUser"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -26,11 +26,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"random-user\">\n    Random - ";
+  buffer += "<div class=\"image-container\">\n    <img src=\"../images/reindeer-1.svg\" />\n    <!-- Random - ";
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\n</div>";
+    + " -->\n</div>";
   return buffer;
   });
 
@@ -40,11 +40,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div>\n    Round ";
-  if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\n</div>\n<div id=\"randomUserList\">\n</div>\n<div>\n    <a href=\"/rounds/";
+  buffer += "<div id=\"randomUserList\">\n</div>\n<div>\n    <a href=\"/rounds/";
   if (helper = helpers.nextRoundId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.nextRoundId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
