@@ -180,7 +180,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div>\n    Random - ";
+  buffer += "<div class=\"random-user\">\n    Random - ";
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -202,7 +202,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (helper = helpers.nextRoundId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.nextRoundId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\">Next Round</a>\n</div>";
+    + "\" class=\"next-round\">Next Round</a>\n</div>";
   return buffer;
   });
 
@@ -259,6 +259,8 @@ var Layout = Backbone.View.extend({
   template: Templates['layout'],
 
   initialize: function(options) {
+    this.router = options.router;
+
     // create the selection list
     this.userList = new UserList({
       collection: options.router.users,
@@ -282,7 +284,10 @@ var Layout = Backbone.View.extend({
       this.currentRound.remove();
     }
 
-    this.currentRound = new RoundView({model: round});
+    this.currentRound = new RoundView({
+      router: this.router,
+      model: round
+    });
     this.render();
   },
 
@@ -335,24 +340,18 @@ var RandomUserView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-    this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
   },
 
   events: {
-    'click': '_selectUser'
+    'click': '_showUser'
   },
 
-  _selectUser: function(ev) {
+  _showUser: function(ev) {
     ev.preventDefault();
 
-    if(!this.model.get('selected')) {
-      this.model.collection.resetSelected();
-      this.model.collection.selectById(this.model.id);
-
-      this.router.navigate("/users/" + this.model.id, {trigger: true});
-    }
+    this.$el.addClass('flipped');
   }
 });
 
@@ -400,6 +399,8 @@ var RoundView = Backbone.View.extend({
   template: Templates['round'],
 
   initialize: function(options) {
+    this.router = options.router;
+
     this.userList = new RandomUserList({
       collection: this.model.get('users'),
       router: options.router
@@ -411,6 +412,19 @@ var RoundView = Backbone.View.extend({
     this.userList.setElement(this.$('#randomUserList')).render();
 
     return this;
+  },
+
+  events: {
+    "click .next-round": "_nextRound"
+  },
+
+  _nextRound: function(ev) {
+    ev.preventDefault();
+
+    this.router.navigate(
+      '/rounds/' + (parseInt(this.model.id) + 1), {
+        trigger: true
+      });
   }
 });
 

@@ -16,6 +16,8 @@ var RoundView = Backbone.View.extend({
   template: Templates['round'],
 
   initialize: function(options) {
+    this.router = options.router;
+
     this.userList = new RandomUserList({
       collection: this.model.get('users'),
       router: options.router
@@ -27,6 +29,19 @@ var RoundView = Backbone.View.extend({
     this.userList.setElement(this.$('#randomUserList')).render();
 
     return this;
+  },
+
+  events: {
+    "click .next-round": "_nextRound"
+  },
+
+  _nextRound: function(ev) {
+    ev.preventDefault();
+
+    this.router.navigate(
+      '/rounds/' + (parseInt(this.model.id) + 1), {
+        trigger: true
+      });
   }
 });
 
