@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 var RandomUserView = require('views/randomUser');
 var RandomizedUserList = Backbone.View.extend({
-  tagName: 'section',
+  tagName: 'ul',
 
   initialize: function(options){
     this.router = options.router;

@@ -6,8 +6,8 @@ var Handlebars = require('handlebars');
 var Templates = require('templates/compiledTemplates')(Handlebars);
 
 var RandomUserView = Backbone.View.extend({
-  tagName: 'article',
-  className: 'user',
+  tagName: 'li',
+  className: 'random-user',
   template: Templates['randomUser'],
 
   initialize: function(options) {
