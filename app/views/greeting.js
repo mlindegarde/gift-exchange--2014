@@ -1,12 +1,15 @@
 var Backbone = require('backbone');
 
+var Handlebars = require('handlebars');
+var Templates = require('templates/compiledTemplates')(Handlebars);
+
 var GreetingView = Backbone.View.extend({
-  template: '<h1>Welcome to the 2014 Christmas Exchange</h1>',
+  template: Templates['greeting'],
 
   className: 'details',
 
   render: function() {
-    this.$el.html(this.template);
+    this.$el.html(this.template());
     return this;
   }
 });

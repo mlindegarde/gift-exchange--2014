@@ -39,7 +39,7 @@ var RoundsRouter = Backbone.Router.extend({
     this.round = new Round();
 
     this.round.set('id', id);
-    this.round.set('user', this.users.randomize());
+    this.round.set('users', this.users.randomize());
 
     this.layout.setRound(this.round);
   },

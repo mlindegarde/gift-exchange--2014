@@ -2,10 +2,13 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
+var Handlebars = require('handlebars');
+var Templates = require('templates/compiledTemplates')(Handlebars);
+
 var UserView = Backbone.View.extend({
   tagName: 'article',
   className: 'user',
-  template: '<%= name %>',
+  template: Templates['user'],
 
   initialize: function(options) {
     _.bindAll(this, "render");
@@ -16,8 +19,7 @@ var UserView = Backbone.View.extend({
   },
 
   render: function() {
-    var tmpl = _.template(this.template);
-    this.$el.html(tmpl(this.model.toJSON()));
+    this.$el.html(this.template(this.model.toJSON()));
     this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
