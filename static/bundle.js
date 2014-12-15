@@ -24,7 +24,7 @@ var Users = Backbone.Collection.extend({
 
 module.exports = Users;
 
-},{"Backbone":12,"models/user":20}],2:[function(require,module,exports){
+},{"Backbone":13,"models/user":21}],2:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -46,7 +46,7 @@ $(document).ready(function() {
 });
 
 
-},{"backbone":14,"jquery":18,"routers/rounds":21,"underscore":22}],3:[function(require,module,exports){
+},{"backbone":15,"jquery":19,"routers/rounds":22,"underscore":23}],3:[function(require,module,exports){
 var Backbone = require("Backbone");
 var UserList = require('collections/users');
 
@@ -57,7 +57,7 @@ var Round = Backbone.Model.extend({
 });
 
 module.exports = Round;
-},{"Backbone":12,"collections/users":16}],4:[function(require,module,exports){
+},{"Backbone":13,"collections/users":17}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 
 var Selection = Backbone.Model.extend({
@@ -69,7 +69,7 @@ var Selection = Backbone.Model.extend({
 module.exports = Selection;
 
 
-},{"backbone":14}],5:[function(require,module,exports){
+},{"backbone":15}],5:[function(require,module,exports){
 var Backbone = require("Backbone");
 
 var User = Backbone.Model.extend({
@@ -82,7 +82,7 @@ var User = Backbone.Model.extend({
 
 module.exports = User;
 
-},{"Backbone":12}],6:[function(require,module,exports){
+},{"Backbone":13}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -138,7 +138,72 @@ var RoundsRouter = Backbone.Router.extend({
 
 module.exports = RoundsRouter;
 
-},{"backbone":14,"collections/users":16,"data/users.json":17,"jquery":18,"models/round":19,"underscore":22,"views/layout":24,"views/userList":27}],7:[function(require,module,exports){
+},{"backbone":15,"collections/users":17,"data/users.json":18,"jquery":19,"models/round":20,"underscore":23,"views/layout":25,"views/userList":28}],7:[function(require,module,exports){
+module.exports = function(Handlebars) {
+
+var templates = {};
+
+templates["greeting"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<h1>Welcome to the 2014 Christmas Exchange!</h1>";
+  });
+
+templates["layout"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<div id=\"userList\">\n</div>\n<div id=\"round\">\n</div>'";
+  });
+
+templates["round"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "";
+  buffer += "\n        <span>"
+    + escapeExpression((typeof depth0 === functionType ? depth0.apply(depth0) : depth0))
+    + "</span>\n    ";
+  return buffer;
+  }
+
+  buffer += "<div>\n    ";
+  if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\n</div>\n<div>\n    A\n</div>\n<div>\n    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.users), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</div>";
+  return buffer;
+  });
+
+templates["user"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div>\n    ";
+  if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\n</div>";
+  return buffer;
+  });
+
+return templates;
+
+};
+},{}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 
 var GreetingView = Backbone.View.extend({
@@ -153,7 +218,7 @@ var GreetingView = Backbone.View.extend({
 });
 
 module.exports = GreetingView;
-},{"backbone":14}],8:[function(require,module,exports){
+},{"backbone":15}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 
@@ -225,7 +290,7 @@ Layout.getInstance = function(options) {
 
 module.exports = Layout;
 
-},{"backbone":14,"underscore":22,"views/greeting":23,"views/round":25,"views/userList":27}],9:[function(require,module,exports){
+},{"backbone":15,"underscore":23,"views/greeting":24,"views/round":26,"views/userList":28}],10:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -245,7 +310,7 @@ var RoundView = Backbone.View.extend({
 });
 
 module.exports = RoundView;
-},{"backbone":14,"jquery":18,"underscore":22}],10:[function(require,module,exports){
+},{"backbone":15,"jquery":19,"underscore":23}],11:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -289,7 +354,7 @@ var UserView = Backbone.View.extend({
 
 module.exports = UserView;
 
-},{"backbone":14,"jquery":18,"underscore":22}],11:[function(require,module,exports){
+},{"backbone":15,"jquery":19,"underscore":23}],12:[function(require,module,exports){
 var Backbone = require('backbone');
 
 var UserView = require('views/user');
@@ -312,7 +377,7 @@ var UserList = Backbone.View.extend({
 });
 
 module.exports = UserList;
-},{"backbone":14,"views/user":26}],12:[function(require,module,exports){
+},{"backbone":15,"views/user":27}],13:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1922,7 +1987,7 @@ module.exports = UserList;
 
 }));
 
-},{"underscore":13}],13:[function(require,module,exports){
+},{"underscore":14}],14:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3339,13 +3404,13 @@ module.exports = UserList;
   }
 }.call(this));
 
-},{}],14:[function(require,module,exports){
-module.exports=require(12)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/backbone.js":12,"underscore":15}],15:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports=require(13)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":13}],16:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/backbone.js":13,"underscore":16}],16:[function(require,module,exports){
+module.exports=require(14)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":14}],17:[function(require,module,exports){
 module.exports=require(1)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/collections/users.js":1,"Backbone":12,"models/user":20}],17:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/collections/users.js":1,"Backbone":13,"models/user":21}],18:[function(require,module,exports){
 module.exports=[{"id": 1, "name": "Mike", "enabled": true, "history": []},
  {"id": 2, "name": "Sarah", "enabled": true, "history": []},
  {"id": 3, "name": "Scott", "enabled": true, "history": []},
@@ -3355,7 +3420,7 @@ module.exports=[{"id": 1, "name": "Mike", "enabled": true, "history": []},
  {"id": 7, "name": "Curt", "enabled": true, "history": []},
  {"id": 8, "name": "Donna", "enabled": true, "history": []}]
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -12547,22 +12612,22 @@ return jQuery;
 
 }));
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports=require(3)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/models/round.js":3,"Backbone":12,"collections/users":16}],20:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/models/round.js":3,"Backbone":13,"collections/users":17}],21:[function(require,module,exports){
 module.exports=require(5)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/models/user.js":5,"Backbone":12}],21:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/models/user.js":5,"Backbone":13}],22:[function(require,module,exports){
 module.exports=require(6)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/routers/rounds.js":6,"backbone":14,"collections/users":16,"data/users.json":17,"jquery":18,"models/round":19,"underscore":22,"views/layout":24,"views/userList":27}],22:[function(require,module,exports){
-module.exports=require(13)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":13}],23:[function(require,module,exports){
-module.exports=require(7)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/greeting.js":7,"backbone":14}],24:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/routers/rounds.js":6,"backbone":15,"collections/users":17,"data/users.json":18,"jquery":19,"models/round":20,"underscore":23,"views/layout":25,"views/userList":28}],23:[function(require,module,exports){
+module.exports=require(14)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":14}],24:[function(require,module,exports){
 module.exports=require(8)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/layout.js":8,"backbone":14,"underscore":22,"views/greeting":23,"views/round":25,"views/userList":27}],25:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/greeting.js":8,"backbone":15}],25:[function(require,module,exports){
 module.exports=require(9)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/round.js":9,"backbone":14,"jquery":18,"underscore":22}],26:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/layout.js":9,"backbone":15,"underscore":23,"views/greeting":24,"views/round":26,"views/userList":28}],26:[function(require,module,exports){
 module.exports=require(10)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/user.js":10,"backbone":14,"jquery":18,"underscore":22}],27:[function(require,module,exports){
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/round.js":10,"backbone":15,"jquery":19,"underscore":23}],27:[function(require,module,exports){
 module.exports=require(11)
-},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/userList.js":11,"backbone":14,"views/user":26}]},{},[1,2,3,4,5,6,7,8,9,10,11]);
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/user.js":11,"backbone":15,"jquery":19,"underscore":23}],28:[function(require,module,exports){
+module.exports=require(12)
+},{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/views/userList.js":12,"backbone":15,"views/user":27}]},{},[1,2,3,4,5,6,7,8,9,10,11,12]);
