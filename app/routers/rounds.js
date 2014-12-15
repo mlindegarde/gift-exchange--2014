@@ -21,6 +21,7 @@ var UserList = require('views/userList');
 var RoundsRouter = Backbone.Router.extend({
   routes: {
     'rounds/:id': 'selectRound',
+    'users/:id/remove': 'removeUser',
     '': 'showMain'
   },
 
@@ -45,11 +46,13 @@ var RoundsRouter = Backbone.Router.extend({
     this.layout.setRound(this.round);
   },
 
+  removeUser: function(id) {
+    this.users.removeById(id);
+  },
+
   showMain: function() {
     this.layout.setGreeting();
   }
-
-
 });
 
 module.exports = RoundsRouter;

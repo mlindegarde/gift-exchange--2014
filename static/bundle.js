@@ -13,6 +13,14 @@ var Users = Backbone.Collection.extend({
     }
   },
 
+  removeById: function(id) {
+    var user = this.get(id);
+
+    if(user){
+      this.remove(user);
+    }
+  },
+
   addUser: function(model) {
     this.add(model);
   },
@@ -107,6 +115,7 @@ var UserList = require('views/userList');
 var RoundsRouter = Backbone.Router.extend({
   routes: {
     'rounds/:id': 'selectRound',
+    'users/:id/remove': 'removeUser',
     '': 'showMain'
   },
 
@@ -131,11 +140,13 @@ var RoundsRouter = Backbone.Router.extend({
     this.layout.setRound(this.round);
   },
 
+  removeUser: function(id) {
+    this.users.removeById(id);
+  },
+
   showMain: function() {
     this.layout.setGreeting();
   }
-
-
 });
 
 module.exports = RoundsRouter;
@@ -430,21 +441,6 @@ var UserView = Backbone.View.extend({
     this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
-  },
-
-  events: {
-    'click': '_selectUser'
-  },
-
-  _selectUser: function(ev) {
-    ev.preventDefault();
-
-    if(!this.model.get('selected')) {
-      this.model.collection.resetSelected();
-      this.model.collection.selectById(this.model.id);
-
-      this.router.navigate("/users/" + this.model.id, {trigger: true});
-    }
   }
 });
 

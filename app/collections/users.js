@@ -12,6 +12,14 @@ var Users = Backbone.Collection.extend({
     }
   },
 
+  removeById: function(id) {
+    var user = this.get(id);
+
+    if(user){
+      this.remove(user);
+    }
+  },
+
   addUser: function(model) {
     this.add(model);
   },

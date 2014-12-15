@@ -11,8 +11,8 @@
 
   #userList .user {
     margin: 10px;
-    background-color: blue;
-    color: white;
+    background-color: white;
+    color: black;
   }
 
   #userList .selected {

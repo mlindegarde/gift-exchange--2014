@@ -23,21 +23,6 @@ var UserView = Backbone.View.extend({
     this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
-  },
-
-  events: {
-    'click': '_selectUser'
-  },
-
-  _selectUser: function(ev) {
-    ev.preventDefault();
-
-    if(!this.model.get('selected')) {
-      this.model.collection.resetSelected();
-      this.model.collection.selectById(this.model.id);
-
-      this.router.navigate("/users/" + this.model.id, {trigger: true});
-    }
   }
 });
 
