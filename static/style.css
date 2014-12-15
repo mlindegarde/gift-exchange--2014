@@ -30,3 +30,15 @@
   background-color: #FF0000;
   z-index: 0;
 }
+
+  #round .random-user {
+    display: block;
+    width: 300px;
+    height: 48px;
+    background-color: orange;
+    margin: 16px;
+  }
+
+  #round .flipped .random-user{
+    background-color: green;
+  }

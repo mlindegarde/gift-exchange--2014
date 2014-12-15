@@ -15,6 +15,8 @@ var Layout = Backbone.View.extend({
   template: Templates['layout'],
 
   initialize: function(options) {
+    this.router = options.router;
+
     // create the selection list
     this.userList = new UserList({
       collection: options.router.users,
@@ -38,7 +40,10 @@ var Layout = Backbone.View.extend({
       this.currentRound.remove();
     }
 
-    this.currentRound = new RoundView({model: round});
+    this.currentRound = new RoundView({
+      router: this.router,
+      model: round
+    });
     this.render();
   },
 

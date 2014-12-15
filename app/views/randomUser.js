@@ -20,24 +20,18 @@ var RandomUserView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-    this.$el.toggleClass('selected', this.model.get('selected'));
 
     return this;
   },
 
   events: {
-    'click': '_selectUser'
+    'click': '_showUser'
   },
 
-  _selectUser: function(ev) {
+  _showUser: function(ev) {
     ev.preventDefault();
 
-    if(!this.model.get('selected')) {
-      this.model.collection.resetSelected();
-      this.model.collection.selectById(this.model.id);
-
-      this.router.navigate("/users/" + this.model.id, {trigger: true});
-    }
+    this.$el.addClass('flipped');
   }
 });
 
