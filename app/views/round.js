@@ -5,10 +5,13 @@ var $ = require('jquery');
 Backbone._ = _;
 Backbone.$ = $;
 
+var Handlebars = require('handlebars');
+var Templates = require('templates/compiledTemplates')(Handlebars);
+
 var RoundView = Backbone.View.extend({
   el: '#round',
 
-  template: _.template('<%= id %>'),
+  template: Templates['round'],
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
