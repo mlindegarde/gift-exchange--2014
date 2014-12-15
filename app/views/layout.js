@@ -8,12 +8,11 @@ var UserList = require('views/userList');
 var GreetingView = require('views/greeting');
 var RoundView = require('views/round');
 
+var Handlebars = require('handlebars');
+var Templates = require('templates/compiledTemplates')(Handlebars);
+
 var Layout = Backbone.View.extend({
-  template: _.template('             \
-             <div id="userList">     \
-             </div>                  \
-             <div id="round">      \
-             </div>'),
+  template: Templates['layout'],
 
   initialize: function(options) {
     // create the selection list
