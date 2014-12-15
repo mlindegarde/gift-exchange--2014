@@ -5,6 +5,8 @@ var $ = require('jquery');
 Backbone._ = _;
 Backbone.$ = $;
 
+var RandomUserList = require('views/randomUserList');
+
 var Handlebars = require('handlebars');
 var Templates = require('templates/compiledTemplates')(Handlebars);
 
@@ -13,8 +15,17 @@ var RoundView = Backbone.View.extend({
 
   template: Templates['round'],
 
+  initialize: function(options) {
+    this.userList = new RandomUserList({
+      collection: this.model.get('users'),
+      router: options.router
+    })
+  },
+
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
+    this.userList.setElement(this.$('#randomUserList')).render();
+
     return this;
   }
 });
