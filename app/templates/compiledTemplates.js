@@ -8,7 +8,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<h1>Welcome to the 2014 Christmas Exchange!</h1>";
+  return "<h1>Welcome to the 2014 Christmas Exchange!</h1>\n\n<a href=\"/rounds/1\">Start</a>";
   });
 
 templates["layout"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
