@@ -5,6 +5,27 @@ var Backbone = require('backbone');
 var Handlebars = require('handlebars');
 var Templates = require('templates/compiledTemplates')(Handlebars);
 
+var Images = [
+  'abominable-snowman.svg',
+  'angel.svg',
+  'ball-ornament.svg',
+  'candy-cane.svg',
+  'cardinal.svg',
+  'christmas-tree.svg',
+  'elf.svg',
+  'gingerbread-man.svg',
+  'mrs-clause.svg',
+  'mug.svg',
+  'nutcracker.svg',
+  'penguin.svg',
+  'reindeer-1.svg',
+  'reindeer-2.svg',
+  'santa-clause.svg',
+  'snowflake.svg',
+  'snowman.svg',
+  'stocking.svg'
+];
+
 var RandomUserView = Backbone.View.extend({
   tagName: 'li',
   className: 'random-user',
@@ -14,6 +35,7 @@ var RandomUserView = Backbone.View.extend({
     _.bindAll(this, "render");
 
     this.router = options.router;
+    this.model.set('image', Images[Math.floor(Math.random()*(Images.length))]);
 
     this.listenTo(this.model, 'change:name', this.render);
   },
