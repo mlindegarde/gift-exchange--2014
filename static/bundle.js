@@ -143,7 +143,8 @@ var User = Backbone.Model.extend({
   defaults: {
     name: 'default',
     history: new Array(),
-    enabled: true
+    enabled: true,
+    image: null
   }
 });
 
@@ -238,7 +239,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"image-container\">\n    <img src=\"../images/reindeer-1.svg\" />\n    <!-- Random - ";
+  buffer += "<div class=\"image-container\">\n    <img src=\"../images/";
+  if (helper = helpers.image) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.image); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" />\n    <!-- Random - ";
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -252,11 +257,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div id=\"randomUserList\">\n</div>\n<div>\n    <a href=\"/rounds/";
+  buffer += "<div id=\"randomUserList\">\n</div>\n<div class=\"round-controls\">\n    <a href=\"/rounds/";
   if (helper = helpers.nextRoundId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.nextRoundId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" class=\"next-round\">Next Round</a>\n</div>";
+    + "\" class=\"next-round\">\n        <img src=\"/images/poinsettia.svg\" />\n    </a>\n</div>";
   return buffer;
   });
 
@@ -379,6 +384,27 @@ var Backbone = require('backbone');
 var Handlebars = require('handlebars');
 var Templates = require('templates/compiledTemplates')(Handlebars);
 
+var Images = [
+  'abominable-snowman.svg',
+  'angel.svg',
+  'ball-ornament.svg',
+  'candy-cane.svg',
+  'cardinal.svg',
+  'christmas-tree.svg',
+  'elf.svg',
+  'gingerbread-man.svg',
+  'mrs-clause.svg',
+  'mug.svg',
+  'nutcracker.svg',
+  'penguin.svg',
+  'reindeer-1.svg',
+  'reindeer-2.svg',
+  'santa-clause.svg',
+  'snowflake.svg',
+  'snowman.svg',
+  'stocking.svg'
+];
+
 var RandomUserView = Backbone.View.extend({
   tagName: 'li',
   className: 'random-user',
@@ -388,6 +414,7 @@ var RandomUserView = Backbone.View.extend({
     _.bindAll(this, "render");
 
     this.router = options.router;
+    this.model.set('image', Images[Math.floor(Math.random()*(Images.length))]);
 
     this.listenTo(this.model, 'change:name', this.render);
   },

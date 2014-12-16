@@ -4,7 +4,8 @@ var User = Backbone.Model.extend({
   defaults: {
     name: 'default',
     history: new Array(),
-    enabled: true
+    enabled: true,
+    image: null
   }
 });
 
