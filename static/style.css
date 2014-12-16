@@ -37,6 +37,12 @@ body {
   z-index: 1;
 }
 
+  #randomUserList {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
   #round .random-user {
     display: inline-block;
     width: 25%;
@@ -44,6 +50,7 @@ body {
     margin: 0;
     padding: 0;
     vertical-align: middle;
+    cursor: pointer;
   }
 
     #round .random-user img {
@@ -52,14 +59,36 @@ body {
       -webkit-filter: drop-shadow( 0px 0px 6px #666 );
     }
 
-  #round .flipped {
-    background-color: green;
-  }
-
   #round .random-user .image-container {
+    position: relative;
     text-align: center;
     vertical-align: middle;
   }
+
+  #round .random-user .image-container .name-tag {
+    display: none;
+    position: absolute;
+    top: 50%;
+
+    height: 45%;
+    width: 80%;
+
+    margin: 10%;
+
+    line-height: 45%;
+    text-align: center;
+
+    background-image: url('images/scalloped.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    -webkit-filter: drop-shadow( 0px 0px 6px #666 );
+  }
+
+    #round .flipped .image-container .name-tag {
+      display: block;
+    }
 
   #round .round-controls {
     position: fixed;
