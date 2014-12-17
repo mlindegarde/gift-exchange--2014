@@ -393,26 +393,7 @@ var Backbone = require('backbone');
 var Handlebars = require('handlebars');
 var Templates = require('templates/compiledTemplates')(Handlebars);
 
-var Images = [
-  'abominable-snowman.svg',
-  'angel.svg',
-  'ball-ornament.svg',
-  'candy-cane.svg',
-  'cardinal.svg',
-  'christmas-tree.svg',
-  'elf.svg',
-  'gingerbread-man.svg',
-  'mrs-clause.svg',
-  'mug.svg',
-  'nutcracker.svg',
-  'penguin.svg',
-  'reindeer-1.svg',
-  'reindeer-2.svg',
-  'santa-clause.svg',
-  'snowflake.svg',
-  'snowman.svg',
-  'stocking.svg'
-];
+
 
 var RandomUserView = Backbone.View.extend({
   tagName: 'li',
@@ -423,7 +404,7 @@ var RandomUserView = Backbone.View.extend({
     _.bindAll(this, "render");
 
     this.router = options.router;
-    this.model.set('tagImage', Images[Math.floor(Math.random()*(Images.length))]);
+
 
     this.listenTo(this.model, 'change:name', this.render);
   },
@@ -451,6 +432,28 @@ module.exports = RandomUserView;
 var Backbone = require('backbone');
 
 var RandomUserView = require('views/randomUser');
+
+var Images = [
+  'abominable-snowman.svg',
+  'angel.svg',
+  'ball-ornament.svg',
+  'candy-cane.svg',
+  'cardinal.svg',
+  'christmas-tree.svg',
+  'elf.svg',
+  'gingerbread-man.svg',
+  'mrs-clause.svg',
+  'mug.svg',
+  'nutcracker.svg',
+  'penguin.svg',
+  'reindeer-1.svg',
+  'reindeer-2.svg',
+  'santa-clause.svg',
+  'snowflake.svg',
+  'snowman.svg',
+  'stocking.svg'
+];
+
 var RandomizedUserList = Backbone.View.extend({
   tagName: 'ul',
 
@@ -460,7 +463,14 @@ var RandomizedUserList = Backbone.View.extend({
 
   render: function() {
     var that = this;
+
+    var imageList = Images.slice(0);
+
     var userViews = this.collection.map(function(user) {
+      var selectedIndex = Math.floor(Math.random()*(imageList.length));
+      var selectedImage = imageList.splice(selectedIndex, 1)[0];
+
+      user.set('tagImage', selectedImage);
       return (new RandomUserView({model: user, router: that.router})).render().el;
     });
 
