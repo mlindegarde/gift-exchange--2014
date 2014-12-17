@@ -8,7 +8,7 @@ var Images = [
   'ball-ornament.svg',
   'candy-cane.svg',
   'cardinal.svg',
-  'christmas-tree.svg',
+  'christmas-tree-shadow.svg',
   'elf.svg',
   'gingerbread-man.svg',
   'mrs-clause.svg',
