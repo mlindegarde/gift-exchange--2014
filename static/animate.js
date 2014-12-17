@@ -19,6 +19,7 @@ function makeFlake() {
   var image = document.createElement('img');
 
   image.src = 'images/snowflake' + randomInteger(1, 4) + '.svg';
+
   image.width = 40 * randomFloat(0.35, 1);
 
   leafDiv.style.top = "-40px";

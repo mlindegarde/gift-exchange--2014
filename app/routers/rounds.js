@@ -51,7 +51,8 @@ var RoundsRouter = Backbone.Router.extend({
   },
 
   showMain: function() {
-    this.layout.setGreeting();
+    //this.layout.setGreeting();
+    this.navigate('/rounds/1', {trigger: true});
   }
 });
 

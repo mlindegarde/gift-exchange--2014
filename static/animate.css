@@ -25,8 +25,8 @@
 
 #flakes > div {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 10%;
+    height: 10%;
     -webkit-animation-name: fade, drop;
     -webkit-animation-iteration-count: infinite, infinite;
     -webkit-animation-direction: normal, normal;
