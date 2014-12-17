@@ -76,10 +76,18 @@ $(document).ready(function() {
     var image = document.createElement('img');
 
     image.src = '/images/snowflake' + randomInteger(1, 5) + '.svg';
-    image.width = 100 * randomFloat(0.5, 1);
 
     leafDiv.style.top = "-100px";
     leafDiv.style.left = randomInteger(0, maxLeft) + "px";
+
+    var size = (15 * randomFloat(0.5, 1))+'%';
+
+    $(leafDiv).width(size);
+    $(leafDiv).height(size);
+
+    $(image).width('100%');
+    $(image).height('100%');
+    //image.width = (10 * randomFloat(0.5, 1))+'%';
 
     var spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
     setAnimation('name', spinAnimationName, image);
