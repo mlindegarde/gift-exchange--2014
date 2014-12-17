@@ -1,8 +1,8 @@
-[{"id": 1, "name": "Mike", "enabled": true, "history": []},
- {"id": 2, "name": "Sarah", "enabled": true, "history": []},
- {"id": 3, "name": "Scott", "enabled": true, "history": []},
- {"id": 4, "name": "Samm", "enabled": true, "history": []},
- {"id": 5, "name": "Tom", "enabled": true, "history": []},
- {"id": 6, "name": "Kirsten", "enabled": true, "history": []},
- {"id": 7, "name": "Curt", "enabled": true, "history": []},
- {"id": 8, "name": "Donna", "enabled": true, "history": []}]
+[{"id": 1, "name": "Mike", "nameImage": "mike.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 2, "name": "Sarah", "nameImage": "sarah.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 3, "name": "Scott", "nameImage": "scott.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 4, "name": "Samm", "nameImage": "samm.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 5, "name": "Tom", "nameImage": "tom.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 6, "name": "Kirsten", "nameImage": "kirsten.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 7, "name": "Curt", "nameImage": "curt.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 8, "name": "Donna", "nameImage": "donna.svg", "tagImage": null, "enabled": true, "history": []}]

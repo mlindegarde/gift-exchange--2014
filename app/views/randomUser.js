@@ -35,7 +35,7 @@ var RandomUserView = Backbone.View.extend({
     _.bindAll(this, "render");
 
     this.router = options.router;
-    this.model.set('image', Images[Math.floor(Math.random()*(Images.length))]);
+    this.model.set('tagImage', Images[Math.floor(Math.random()*(Images.length))]);
 
     this.listenTo(this.model, 'change:name', this.render);
   },

@@ -212,7 +212,8 @@ var RoundsRouter = Backbone.Router.extend({
   },
 
   showMain: function() {
-    this.layout.setGreeting();
+    //this.layout.setGreeting();
+    this.navigate('/rounds/1', {trigger: true});
   }
 });
 
@@ -247,15 +248,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"image-container\">\n    <img src=\"../images/";
-  if (helper = helpers.image) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.image); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += "<div class=\"image-container\">\n    <img class=\"tag\" src=\"../images/";
+  if (helper = helpers.tagImage) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.tagImage); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" />\n    <div class=\"name-tag\">\n        ";
-  if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+    + "\" />\n    <div class=\"name-tag\">\n        <img class=\"name\" src=\"../images/";
+  if (helper = helpers.nameImage) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.nameImage); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\n    </div>\n</div>";
+    + "\" />\n    </div>\n</div>";
   return buffer;
   });
 
@@ -422,7 +423,7 @@ var RandomUserView = Backbone.View.extend({
     _.bindAll(this, "render");
 
     this.router = options.router;
-    this.model.set('image', Images[Math.floor(Math.random()*(Images.length))]);
+    this.model.set('tagImage', Images[Math.floor(Math.random()*(Images.length))]);
 
     this.listenTo(this.model, 'change:name', this.render);
   },
@@ -3606,14 +3607,14 @@ module.exports=require(16)
 },{"/Users/mlindegarde/My Dev/gift-exchange-2014/node_modules/Backbone/node_modules/underscore/underscore.js":16}],19:[function(require,module,exports){
 module.exports=require(1)
 },{"/Users/mlindegarde/My Dev/gift-exchange-2014/app/collections/users.js":1,"Backbone":15,"models/user":39}],20:[function(require,module,exports){
-module.exports=[{"id": 1, "name": "Mike", "enabled": true, "history": []},
- {"id": 2, "name": "Sarah", "enabled": true, "history": []},
- {"id": 3, "name": "Scott", "enabled": true, "history": []},
- {"id": 4, "name": "Samm", "enabled": true, "history": []},
- {"id": 5, "name": "Tom", "enabled": true, "history": []},
- {"id": 6, "name": "Kirsten", "enabled": true, "history": []},
- {"id": 7, "name": "Curt", "enabled": true, "history": []},
- {"id": 8, "name": "Donna", "enabled": true, "history": []}]
+module.exports=[{"id": 1, "name": "Mike", "nameImage": "mike.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 2, "name": "Sarah", "nameImage": "sarah.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 3, "name": "Scott", "nameImage": "scott.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 4, "name": "Samm", "nameImage": "samm.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 5, "name": "Tom", "nameImage": "tom.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 6, "name": "Kirsten", "nameImage": "kirsten.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 7, "name": "Curt", "nameImage": "curt.svg", "tagImage": null, "enabled": true, "history": []},
+ {"id": 8, "name": "Donna", "nameImage": "donna.svg", "tagImage": null, "enabled": true, "history": []}]
 
 },{}],21:[function(require,module,exports){
 
