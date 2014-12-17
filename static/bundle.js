@@ -439,7 +439,7 @@ var Images = [
   'ball-ornament.svg',
   'candy-cane.svg',
   'cardinal.svg',
-  'christmas-tree-shadow.svg',
+  'christmas-tree.svg',
   'elf.svg',
   'gingerbread-man.svg',
   'mrs-clause.svg',
