@@ -37,11 +37,15 @@ var RoundsRouter = Backbone.Router.extend({
   },
 
   selectRound: function(id) {
+    var round = parseInt(id);
+
+    $(document).prop('title', '2014 Gift Exchange - Round '+round);
+
     this.round = new Round();
 
     this.round.set('id', id);
     this.round.set('users', this.users.randomize());
-    this.round.set('nextRoundId', parseInt(id)+1)
+    this.round.set('nextRoundId', round + 1);
 
     this.layout.setRound(this.round);
   },
