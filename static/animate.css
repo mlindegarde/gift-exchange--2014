@@ -92,7 +92,6 @@
     100% { -moz-transform: rotate(50deg); }
 }
 
-
 @-moz-keyframes counterclockwiseSpinAndFlip {
     0%   { -moz-transform: scale(-1, 1) rotate(50deg); }
     100% { -moz-transform: scale(-1, 1) rotate(-50deg); }
