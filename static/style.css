@@ -62,10 +62,37 @@ body {
     #round .random-user img.tag {
       height: 70%;
       margin-top: 15%;
+      
       filter: drop-shadow( 0px 0px 6px #666 );
       -moz-filter: drop-shadow( 0px 0px 6px #666 );
       -webkit-filter: drop-shadow( 0px 0px 6px #666 );
+
+      /*
+      -webkit-transition: height .10s, margin-top .10s;
+      -moz-transition: height .10s, margin-top .10s;
+      -ms-transition: height .10s, margin-top .10s;
+      -o-transition: height .10s, margin-top .10s;
+      transition: height .10s, margin-top .10s;
+      */
     }
+
+      /*
+      #round .random-user img.tag:hover {
+        height: 76%;
+        margin-top: 12%;
+
+        -webkit-transition: height .10s, margin-top .10s;
+        -moz-transition: height .10s, margin-top .10s;
+        -ms-transition: height .10s, margin-top .10s;
+        -o-transition: height .10s, margin-top .10s;
+        transition: height .10s, margin-top .10s;
+      }
+
+        #round .flipped img.tag {
+          height: 76%;
+          margin-top: 12%;
+        }
+        */
 
     #round .random-user img.name {
       width: 100%;
@@ -74,7 +101,7 @@ body {
 
   #round .random-user .image-container .name-tag {
     display: none;
-    opacity: .25;
+    opacity: .10;
     position: absolute;
     top: 50%;
 
@@ -98,15 +125,15 @@ body {
       display: block;
 
       animation: fadeIn ease-in 1;
-      animation-duration: .25s;
+      animation-duration: .10s;
       animation-fill-mode: forwards;
 
       -webkit-animation: fadeIn ease-in 1;
-      -webkit-animation-duration: .25s;
+      -webkit-animation-duration: .10s;
       -webkit-animation-fill-mode: forwards;
 
       -moz-animation: fadeIn ease-in 1;
-      -moz-animation-duration: .25s;
+      -moz-animation-duration: .10s;
       -moz-animation-fill-mode: forwards;
     }
 
@@ -144,3 +171,4 @@ body {
   from   { opacity: 0; }
   to { opacity: 1; }
 }
+
